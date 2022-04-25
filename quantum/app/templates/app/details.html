@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title> {{article.article_title}} </title>
+    </head>
+    {% block content %}
+    <h2 style="color:red"> {{article.article_title }} </h2>
+    <p style="color:blue"> {{article.article_text}}</p>
+    <em>{{article.pub_date}}</em>
+    <hr>
+
+<h2>Комментарии: всего {{total_comment}}</h2>
+<hr>
+{% if latest_comments_list %}
+{% for c in latest_comments_list %}
+<p>
+    <strong>{{c.author_name}}</strong>
+    Написал
+    {{c.comment_pub_date}}
+    <p style="color:green"> {{ c.comment_text}}</p>
+    <hr>
+</p>
+{% endfor %}
+{% else %}
+Комментарии не найдены
+{% endif %}
+<form action="{% url 'app:leave_comment' article.id %}" method = "POST">
+    {% csrf_token %}
+    <input type="text" required placeholder="Ваше имя" name="name"><br>
+    <textarea name="text" required="" placeholder="Оставьте комментарий" cols="80" rows="10" ></textarea><br>
+    <button type="submit">Оставить комментарий</button>
+</form>
+{%endblock%}
+</html>
